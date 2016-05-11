@@ -1,0 +1,25 @@
+{
+  "name": "hi-router",
+  "version": "1.0.0",
+  "description": "A Frontend Router",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ele828/hi-router.git"
+  },
+  "keywords": [
+    "Router"
+  ],
+  "author": "Eric Wong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ele828/hi-router/issues"
+  },
+  "homepage": "https://github.com/ele828/hi-router#readme"
+}
