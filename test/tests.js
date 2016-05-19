@@ -4,11 +4,11 @@ router.addList({
 		console.log('/author route');
 	},
 
-	'/about': function() {
-		console.log('/about route');
+	'/about/(.*)?': function(id) {
+		console.log('/about route, id:', id);
 	}
 });
 
 router.navigate('/');
 router.navigate('/author');
-router.navigate('/about');
+router.navigate('/about/123');

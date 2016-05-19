@@ -62,8 +62,8 @@ router.addList({
 		console.log('/author route');
 	},
 
-	'/about': function() {
-		console.log('/about route');
+	'/about/(.*)?': function(id) {
+		console.log('/about route, id:', id);
 	}
 });
 ```
@@ -71,6 +71,12 @@ router.addList({
 Navigate to specified path.
 ```javascript
 router.navigate('/author');
+```
+
+- Re-initialize
+
+```javascript
+router.flush();
 ```
 
 ### Lack of Test Case now

@@ -8,7 +8,7 @@
 type Mode = 'history' | 'hash' | null;
 
 type Route = {
-  regex: RegExp | string,
+  regex: string,
   handler: Function
 }
 
@@ -67,7 +67,7 @@ export default class Router {
    }
 
    // Add a router
-   add(regex: RegExp | string, handler: Function) {
+   add(regex: string | string, handler: Function) {
      this.routes.push({
        regex: regex,
        handler: handler
@@ -82,7 +82,7 @@ export default class Router {
      return this;
    }
 
-   remove(param: RegExp | Function) {
+   remove(param: string | Function) {
      this.routes.forEach((r, i) => {
        if (r.handler === param || r.regex.toString() === param.toString()) {
          this.routes.splice(i, 1);
@@ -102,16 +102,13 @@ export default class Router {
 
    // Fire specific router handler
    fire(fragment: string) {
-     console.log(`fire route ${fragment}`)
      fragment = fragment || this.getFragment();
-     fragment = this._clearSlashes(fragment);
      this.routes.forEach((r: Route, i) => {
-       const match = fragment.match(r.regex);
+       let regex = this._clearSlashes(r.regex);
+       const match = fragment.match(regex);
        if (match) {
-         console.log(`Before shift: ${match}`);
-        //  match.shift();
-        //  console.log(`After shift: ${match}`);
-         r.handler.apply(null, match)
+         match.shift();
+         r.handler.call(null, match[0])
          return this;
        }
      });
@@ -126,7 +123,7 @@ export default class Router {
      this.intv = setInterval(() => {
        // URL changed.
        if (curFragment !== this.getFragment()) {
-         console.log(`old frag: ${curFragment}, new frag: ${this.getFragment()}`)
+        //  console.log(`old frag: ${curFragment}, new frag: ${this.getFragment()}`)
          curFragment = this.getFragment();
          // Fire check
          this.fire(curFragment);
