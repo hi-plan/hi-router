@@ -5,25 +5,25 @@ A Tiny Front End Router.
 ```html
 <script src="../lib/router.js"></script>
 <script>
-var router = new Router();
-router.addList({
-	'/author': function() {
-		console.log('/author route');
-	},
+	var router = new Router();
+	router.addList({
+		'/author': function() {
+			console.log('/author route');
+		},
 
-	'/about/(.*)?': function(id) {
-		console.log('/about route, id:', id);
-	}
-});
+		'/about/(.*)?': function(id) {
+			console.log('/about route, id:', id);
+		}
+	});
 
-router.navigate('/');
-router.navigate('/author');
-router.navigate('/about');
+	router.navigate('/');
+	router.navigate('/author');
+	router.navigate('/about');
 
-// OR, we can add a route like this.
-router.add('/page', function() {
-	console.log('/page route');
-});
+	// OR, we can add a route like this.
+	router.add('/page', function() {
+		console.log('/page route');
+	});
 </script>
 ```
 
