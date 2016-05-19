@@ -1,5 +1,5 @@
 /* @flow */
 export default class Pattern {
-	regex: any;
-	hanlder: Function
+  regex: any;
+  hanlder: Function
 }
