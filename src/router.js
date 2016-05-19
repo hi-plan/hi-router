@@ -67,7 +67,7 @@ export default class Router {
    }
 
    // Add a router
-   add(regex: string | string, handler: Function) {
+   add(regex: string, handler: Function) {
      this.routes.push({
        regex: regex,
        handler: handler
