@@ -8,11 +8,12 @@
 type Mode = 'history' | 'hash' | null;
 
 type Route = {
-  regex: RegExp,
+  regex: RegExp | string,
   handler: Function
 }
 
-class Router {
+// Expose to global env.
+export default class Router {
    routes: Array<Route> = [];
    mode: Mode = null;
    root: string = '/';
@@ -58,7 +59,15 @@ class Router {
           .replace(/^\//, '');
    }
 
-   add(regex: RegExp, handler: Function) {
+   // Add a bunch of router
+   addList(list: { [key: string]: Function }) {
+     const regexs = Object.keys(list);
+     regexs.forEach(r => this.add(r, list[r]) );
+     return this;
+   }
+
+   // Add a router
+   add(regex: RegExp | string, handler: Function) {
      this.routes.push({
        regex: regex,
        handler: handler
@@ -95,8 +104,9 @@ class Router {
    fire(fragment: string) {
      console.log(`fire route ${fragment}`)
      fragment = fragment || this.getFragment();
+     fragment = this._clearSlashes(fragment);
      this.routes.forEach((r: Route, i) => {
-       const match = fragment.match(r.regex) || r.regex.match(fragment);
+       const match = fragment.match(r.regex);
        if (match) {
          console.log(`Before shift: ${match}`);
         //  match.shift();
@@ -138,6 +148,3 @@ class Router {
    }
 
  }
-
-// Expose to global env.
-export default Router;
