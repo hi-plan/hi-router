@@ -6,20 +6,23 @@
  * @flow
  **/
 
-import Pattern from './pattern.js';
+type Mode = 'history' | 'hash' | null;
 
-type Mode = 'history' | 'hash';
+type Route = {
+  regex: RegExp,
+  handler: Function
+}
 
 class Router {
-   routes: Array<Pattern>;
-   mode: Mode;
-   root: string;
+   routes: Array<Route> = [];
+   mode: Mode = null;
+   root: string = '/';
 
-   constructor(options) {
-     this.config(options);
+   constructor(options: Object) {
+     options && this.config(options);
    }
 
-   config(options) {
+   config(options: Object) {
      if (!options)
        throw new Error('Params should be an Object and should not be empty.')
 
@@ -54,4 +57,33 @@ class Router {
           .replace(/^\//, '');
    }
 
+   add(regex: RegExp, handler: Function) {
+     this.routes.push({
+       regex: regex,
+       handler: handler
+     });
+     return this;
+   }
+
+   remove(param: RegExp | Function) {
+     this.routes.forEach((r, i) => {
+       if (r.handler === param || r.regex.toString() === param.toString()) {
+         this.routes.splice(i, 1);
+         return this;
+       }
+     });
+     return this;
+   }
+
+   // Re-initialize
+   flush() {
+     this.routes = [];
+     this.mode = null;
+     this.root = '/';
+     return this;
+   }
+
  }
+
+// Expose to global env.
+export default Router;
