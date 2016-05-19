@@ -79,5 +79,12 @@ router.navigate('/author');
 router.flush();
 ```
 
+## Development
+
+```npm install```
+
+Build
+```npm run build```
+
 ### Lack of Test Case now
 Should not use in Production, it's still an unstable version.
