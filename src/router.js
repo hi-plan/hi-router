@@ -2,7 +2,6 @@
  * Front End Router by Eric Wong
  * ele828@gmail.com
  * 2016/05/19
- *
  * @flow
  **/
 
@@ -17,7 +16,7 @@ class Router {
    routes: Array<Route> = [];
    mode: Mode = null;
    root: string = '/';
-
+   intv: number;
    constructor(options: Object) {
      options && this.config(options);
    }
@@ -37,7 +36,7 @@ class Router {
      return this;
    }
 
-   getFragment() {
+   getFragment(): string {
      let fragment: string;
      if (this.mode === 'history') {
        const path = decodeURI(location.pathname);
@@ -80,6 +79,49 @@ class Router {
      this.routes = [];
      this.mode = null;
      this.root = '/';
+     return this;
+   }
+
+   // Fire specific router handler
+   fire(fragment: string) {
+     fragment = fragment || this.getFragment();
+     this.routes.forEach((r: Route, i) => {
+       const match = fragment.match(r.regex);
+       if (match) {
+         console.log(`Before shift: ${match}`);
+        //  match.shift();
+        //  console.log(`After shift: ${match}`);
+         r.handler.apply(null, match)
+         return this;
+       }
+     });
+     return this;
+   }
+
+   // Listen to fragment changes
+   listen() {
+     let curFragment = this.getFragment();
+     clearInterval(this.intv);
+     this.intv = setInterval(() => {
+       // URL changed.
+       if (curFragment !== this.getFragment()) {
+         curFragment = this.getFragment();
+         // Fire check
+         this.fire(curFragment);
+       }
+     }, 50);
+     return this;
+   }
+
+   // Navigate to specific URL
+   navigate(path: string) {
+     path = path || '';
+     if (this.mode === 'history') {
+       history.pushState(null, '', this.root + this._clearSlashes(path))
+     }
+     else {
+       window.location.href = window.location.href.replace(/#(.*)$/, '') + '#' + path;
+     }
      return this;
    }
 
