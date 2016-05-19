@@ -17,6 +17,8 @@ class Router {
    mode: Mode = null;
    root: string = '/';
    intv: number;
+   startListen: boolean = false;
+
    constructor(options: Object) {
      options && this.config(options);
    }
@@ -61,6 +63,13 @@ class Router {
        regex: regex,
        handler: handler
      });
+
+     // Listen to changes automatically.
+     if (!this.startListen) {
+       this.listen();
+       this.startListen = true;
+     }
+
      return this;
    }
 
@@ -84,9 +93,10 @@ class Router {
 
    // Fire specific router handler
    fire(fragment: string) {
+     console.log(`fire route ${fragment}`)
      fragment = fragment || this.getFragment();
      this.routes.forEach((r: Route, i) => {
-       const match = fragment.match(r.regex);
+       const match = fragment.match(r.regex) || r.regex.match(fragment);
        if (match) {
          console.log(`Before shift: ${match}`);
         //  match.shift();
@@ -100,11 +110,13 @@ class Router {
 
    // Listen to fragment changes
    listen() {
-     let curFragment = this.getFragment();
+     let self = this;
+     let curFragment = self.getFragment();
      clearInterval(this.intv);
      this.intv = setInterval(() => {
        // URL changed.
        if (curFragment !== this.getFragment()) {
+         console.log(`old frag: ${curFragment}, new frag: ${this.getFragment()}`)
          curFragment = this.getFragment();
          // Fire check
          this.fire(curFragment);
