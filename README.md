@@ -11,8 +11,8 @@ router.addList({
 		console.log('/author route');
 	},
 
-	'/about': function() {
-		console.log('/about route');
+	'/about/(.*)?': function(id) {
+		console.log('/about route, id:', id);
 	}
 });
 
