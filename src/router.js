@@ -117,8 +117,7 @@ export default class Router {
 
    // Listen to fragment changes
    listen() {
-     let self = this;
-     let curFragment = self.getFragment();
+     let curFragment = this.getFragment();
      clearInterval(this.intv);
      this.intv = setInterval(() => {
        // URL changed.
