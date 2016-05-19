@@ -83,7 +83,6 @@ router.flush();
 
 ```npm install```
 
-Build
 ```npm run build```
 
 ### Lack of Test Case now
