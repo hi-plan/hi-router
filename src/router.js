@@ -94,8 +94,10 @@ export default class Router {
      let regexs = null;
      try {
        regexs = Object.keys(list)
+       if (regexs.length === 0)
+        throw new Error('Object should not be empty.');
      } catch(e) {
-       throw new Error('Bad arguments pass to dispathAll(), it should be an Object.')
+       throw new Error('Bad arguments pass to dispathAll().')
      }
 
      regexs.forEach(r => this.dispatch(r, list[r]) );
