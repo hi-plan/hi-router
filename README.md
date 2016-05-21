@@ -1,5 +1,5 @@
 <a href="https://circleci.com/gh/hi-plan/hi-router/tree/master"><img src="https://img.shields.io/circleci/project/hi-plan/hi-router/master.svg" alt="Build Status"></a>
-<a href="https://codecov.io/github/hi-plan/hi-router?branch=master"><img src="https://img.shields.io/codecov/c/github/hi-plan/hi-router/dev.svg" alt="Coverage Status"></a>
+<a href="https://codecov.io/github/hi-plan/hi-router?branch=master"><img src="https://img.shields.io/codecov/c/github/hi-plan/hi-router/master.svg" alt="Coverage Status"></a>
 
 # Hi-Router
 A Tiny Front End Router.
