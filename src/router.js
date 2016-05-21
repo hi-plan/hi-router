@@ -105,12 +105,17 @@ export default class Router {
    }
 
    remove(param: string | Function) {
-     this.routes.forEach((r, i) => {
-       if (r.handler === param || r.regex.toString() === param.toString()) {
-         this.routes.splice(i, 1);
+     const r = this.routes;
+     for (let i = 0; i < r.length; i++) {
+       if (param === r[i].handler) {
+         r.splice(i, 1)
+         i--;
+       } else if (r[i].regex.toString() === param.toString()) {
+         r.splice(i, 1);
          return this;
        }
-     });
+     }
+
      return this;
    }
 
