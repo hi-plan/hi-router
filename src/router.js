@@ -147,7 +147,7 @@ export default class Router {
        const match = fragment.match(regex);
        if (match) {
          match.shift();
-         r.handler.call(null, match[0])
+         r.handler.apply(null, match)
          return this;
        }
      });
