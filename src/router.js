@@ -75,6 +75,9 @@ export default class Router {
      if (!regex || !handler)
        throw new Error('Bad arguments pass to dispatch().')
 
+     if (this._contains(this.routes, {regex: regex, handler: handler}))
+       throw new Error('Add route twice.')
+
      this.routes.push({
        regex: regex,
        handler: handler
@@ -117,6 +120,15 @@ export default class Router {
      }
 
      return this;
+   }
+
+   _contains(arr: Array<any>, target: any): boolean {
+     let i = arr.length;
+     while(i--) {
+       if (target.regex === arr[i].regex)
+        return true
+     }
+     return false
    }
 
    // Re-initialize
