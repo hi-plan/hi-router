@@ -17,6 +17,11 @@ describe('Router Initialize Test', function() {
     }).toEqual(config);
   })
 
+  it('should not be called as function', function() {
+    var err = 'Cannot call a class as a function'
+    expect(Router).toThrowError(err)
+  })
+
 });
 
 describe('Router Configuration Test', function() {
