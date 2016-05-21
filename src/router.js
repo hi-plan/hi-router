@@ -72,7 +72,7 @@ export default class Router {
    // Add a bunch of router
    dispatchAll(list: { [key: string]: Function }) {
      const regexs = Object.keys(list);
-     regexs.forEach(r => this.add(r, list[r]) );
+     regexs.forEach(r => this.dispatch(r, list[r]) );
      return this;
    }
 
