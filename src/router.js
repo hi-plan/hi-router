@@ -73,7 +73,7 @@ export default class Router {
    dispatch(regex: string, handler: Function) {
      // Validation Judgement
      if (!regex || !handler)
-      throw new Error('Bad arguments pass to dispatch()')
+      throw new Error('Bad arguments pass to dispatch().')
 
      this.routes.push({
        regex: regex,
@@ -91,7 +91,13 @@ export default class Router {
 
    // Add a bunch of router
    dispatchAll(list: { [key: string]: Function }) {
-     const regexs = Object.keys(list);
+     let regexs = null;
+     try {
+       regexs = Object.keys(list)
+     } catch(e) {
+       throw new Error('Bad arguments pass to dispathAll(), it should be an Object.')
+     }
+
      regexs.forEach(r => this.dispatch(r, list[r]) );
      return this;
    }
