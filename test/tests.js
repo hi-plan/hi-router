@@ -218,6 +218,15 @@ describe('dispatch Method Test', function() {
     expect(router.dispatch.bind(router, '/test', null)).toThrowError(errMsg)
     expect(router.dispatch.bind(router, handler)).toThrowError(errMsg)
   })
+
+  it('should throw an Error if add twice', function() {
+    var router = new Router
+    var handler = function() {}
+    var errMsg = 'Add route twice.'
+    router.dispatch('/about', handler)
+    router.dispatch('/books', handler)
+    expect(router.dispatch.bind(router, '/about', handler)).toThrowError(errMsg)
+  })
 })
 
 describe('dispatchAll Method Test', function() {
@@ -248,5 +257,85 @@ describe('dispatchAll Method Test', function() {
     expect(router.dispatchAll.bind(router, null)).toThrowError(errMsg)
     expect(router.dispatchAll.bind(router, undefined)).toThrowError(errMsg)
     expect(router.dispatchAll.bind(router, {})).toThrowError(errMsg)
+  })
+})
+
+describe('remove Method Test', function() {
+  it('should be removed by regex rule properly', function() {
+    var router = new Router
+    var handler = function() {}
+    router.dispatch('/about', handler)
+    router.dispatch('/author', handler)
+    expect(router.routes.length).toBe(2)
+    expect(router.routes[0]).toEqual({regex: '/about', handler: handler})
+
+    // Remove it
+    router.remove('/about')
+    expect(router.routes.length).toBe(1)
+    expect(router.routes[0]).toEqual({regex: '/author', handler: handler})
+  })
+
+  it('should be removed by handler function properly', function() {
+    var router = new Router
+    var handler = function() {}
+    router.dispatch('/about', handler)
+    router.dispatch('/author', handler)
+    router.dispatch('/books', function() {})
+    expect(router.routes.length).toBe(3)
+
+    // Remove it, if we have the same handler for more one route,
+    // We'll remove both of them.
+    router.remove(handler)
+    expect(router.routes.length).toBe(1)
+  })
+})
+
+describe('flush Method Test', function() {
+  it('should be flushed properly', function() {
+    var router = new Router
+    var handler = function() {}
+    router.dispatch('/about', handler)
+    router.dispatch('/author', handler)
+    expect(router.routes.length).toBe(2)
+    expect(router.routes[0]).toEqual({regex: '/about', handler: handler})
+
+    // Flush
+    router.flush()
+    expect(router.routes.length).toBe(0)
+    expect(router.mode).toBeNull()
+    expect(router.root).toBe('/')
+  })
+})
+
+describe('listen Method Test', function() {
+  it('should listen to change automatically', function() {
+    var router = new Router
+    expect(router.startListen).toBe(false)
+    router.dispatch('/about', function() {})
+    expect(router.startListen).toBe(true)
+  })
+
+  it('should listen to URL change when change happens in hash mode', function(done) {
+    var router = new Router
+    var beCalled = false
+    router.dispatch('/about', function() { beCalled = true })
+    router.navigate('/about')
+    setTimeout(function() {
+      if (beCalled)
+        done()
+      else done.fail()
+    }, 70)
+  })
+
+  it('should listen to URL change when change happens in history mode', function(done) {
+    var router = new Router({mode: 'history'})
+    var beCalled = false
+    router.dispatch('/about', function() { beCalled = true })
+    router.navigate('/about')
+    setTimeout(function() {
+      if (beCalled)
+        done()
+      else done.fail()
+    }, 70)
   })
 })
