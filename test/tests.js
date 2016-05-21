@@ -50,35 +50,19 @@ describe('Router Configuration Test', function() {
 		var router = new Router()
 
 		var emptyConfig = function() {
-			try {
 				router.config()
-			} catch(e) {
-				throw e
-			}
 		}
 
 		var nullConfig = function() {
-			try {
 				router.config(null)
-			} catch(e) {
-				throw e
-			}
 		}
 
 		var emptyObjConfig = function() {
-			try {
 				router.config({})
-			} catch(e) {
-				throw e
-			}
 		}
 
 		var nullParamsConfig = function() {
-			try {
 				router.config(null)
-			} catch(e) {
-				throw e
-			}
 		}
 
 		expect(emptyConfig).toThrowError(errMsg)
@@ -126,11 +110,6 @@ describe('Navigate Function Test in `hash` Mode', function() {
 
 	var sourceURL = location.href
 
-	// Reset URL to root.
-	beforeEach(function() {
-		location.href = sourceURL
-	})
-
 	it('should navigate to correct URL', function() {
 		var url = location.href
 		router.navigate('/about')
@@ -161,11 +140,6 @@ describe('Navigate Function Test in `history` Mode', function() {
 
 	var sourceURL = 'http://' + location.host;
 
-	// Reset URL to root.
-	beforeEach(function() {
-		location.href = sourceURL
-	})
-
 	it('should navigate to correct URL', function() {
 		router.navigate('/about')
 		expect(location.href).toBe(sourceURL + '/about')
@@ -188,8 +162,7 @@ describe('Navigate Function Test in `history` Mode', function() {
 })
 
 
-describe('GetFragment Method Test', function() {
-
+describe('getFragment Method Test', function() {
 	it('should get URL fragment correctly in `hash` mode', function() {
 		var router = new Router({mode: 'hash'})
 		expect(router.getFragment()).toBe('')
@@ -218,16 +191,43 @@ describe('GetFragment Method Test', function() {
 		router.navigate('/about/test/')
 		expect(router.getFragment()).toBe('about/test')
 
-		router.navigate('#/about/test/')
-		console.log(location.href)
+		router.navigate('/#/about/test/')
 		// Contains hash tag will fail to jump!
 		expect(router.getFragment()).toBe('about/test')
 	})
+
 })
 
-describe('Add Method Test', function() {
-	it('should add() handle bad arguments', function() {
-		var router = new Router()
-		router.add()
+describe('dispatch Method Test', function() {
+	it('should handle normal arguments scenario', function() {
+		var router = new Router
+		var handler = function() {}
+		router.dispatch('/about', handler)
+		router.dispatch('/homepage', handler)
+
+		expect(router.routes.length).toBe(2)
+		expect(router.routes[0]).toEqual({
+			regex: '/about', handler: handler
+		})
+		expect(router.routes[1]).toEqual({
+			regex: '/homepage', handler: handler
+		})
+	})
+
+	it('should handle bad arguments scenario', function() {
+		var router = new Router
+		var handler = function() {}
+
+		var errMsg = 'Bad arguments pass to dispatch()'
+
+		expect(function() {
+			router.dispatch('/test', null)
+		}).toThrowError(errMsg)
+		expect(function() {
+			router.dispatch(null, handler)
+		}).toThrowError(errMsg)
+
+		console.log(router.routes)
+
 	})
 })
