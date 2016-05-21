@@ -25,7 +25,13 @@ export default class Router {
    }
 
    config(options: Object) {
-     if (!options)
+     if (
+        // null | '' | undefined
+        !options
+        // case: {} is not allowed.
+        || Object.keys(options).length === 0
+        || JSON.stringify(options) === '{}'
+      )
        throw new Error('Params should be an Object and should not be empty.')
 
      this.mode = options.mode
@@ -139,10 +145,13 @@ export default class Router {
    navigate(path: string) {
      path = path || '';
      if (this.mode === 'history') {
+       if (path.indexOf('#') >= 0)
+        return;
        history.pushState(null, '', this.root + this._clearSlashes(path))
      }
      else {
-       window.location.href = window.location.href.replace(/#(.*)$/, '') + '#' + path;
+       window.location.href = window.location.href.replace(/#(.*)$/, '')
+                              + '#/' + this._clearSlashes(path);
      }
      return this;
    }
