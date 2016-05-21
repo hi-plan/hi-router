@@ -37,7 +37,7 @@ describe('Router Configuration Test', function() {
 
 	it('should throw exception if params is empty or null', function() {
 		var router = new Router()
-
+		
 	})
 
 })

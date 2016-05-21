@@ -7,6 +7,6 @@ module.exports = function(config) {
     ],
 		singleRun: true,
 		browsers: ['PhantomJS'],
-		reporters: ['progress']
+		reporters: ['spec']
   });
 };
