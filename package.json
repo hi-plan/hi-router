@@ -30,6 +30,7 @@
     "graceful-fs": "^4.1.4",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
+    "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-mocha": "^1.0.1",
     "karma-phantomjs-launcher": "^1.0.0",

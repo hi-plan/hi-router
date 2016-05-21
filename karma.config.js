@@ -7,6 +7,12 @@ module.exports = function(config) {
     ],
 		singleRun: true,
 		browsers: ['PhantomJS'],
-		reporters: ['spec']
+		reporters: ['spec', 'coverage'],
+    coverageReporter: {
+      reporters: [
+        { type: 'lcov', dir: 'coverage/', subdir: '.' },
+        { type: 'text-summary', dir: 'coverage/', subdir: '.' }
+      ]
+    }
   });
 };
