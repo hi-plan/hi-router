@@ -6,7 +6,7 @@ A Tiny Front End Router.
 <script src="../lib/router.js"></script>
 <script>
 	var router = new Router();
-	router.addList({
+	router.dispatchAll({
 		'/author': function() {
 			console.log('/author route');
 		},
@@ -20,8 +20,8 @@ A Tiny Front End Router.
 	router.navigate('/author');
 	router.navigate('/about');
 
-	// OR, we can add a route like this.
-	router.add('/page', function() {
+	// OR, we can dispatch a route like this.
+	router.dispatch('/page', function() {
 		console.log('/page route');
 	});
 </script>
@@ -52,12 +52,12 @@ router.config({
 - Use it
 
 ```javascript
-router.add('/page', function() {
+router.dispatch('/page', function() {
 	console.log('/page route');
 });
 
-// Or,we could add a bunch of routes.
-router.addList({
+// Or,we could dispatch a bunch of routes.
+router.dispatchAll({
 	'/author': function() {
 		console.log('/author route');
 	},

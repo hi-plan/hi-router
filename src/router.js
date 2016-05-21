@@ -70,14 +70,14 @@ export default class Router {
    }
 
    // Add a bunch of router
-   addList(list: { [key: string]: Function }) {
+   dispatchAll(list: { [key: string]: Function }) {
      const regexs = Object.keys(list);
      regexs.forEach(r => this.add(r, list[r]) );
      return this;
    }
 
    // Add a router
-   add(regex: string, handler: Function) {
+   dispatch(regex: string, handler: Function) {
      this.routes.push({
        regex: regex,
        handler: handler

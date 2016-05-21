@@ -224,3 +224,10 @@ describe('GetFragment Method Test', function() {
 		expect(router.getFragment()).toBe('about/test')
 	})
 })
+
+describe('Add Method Test', function() {
+	it('should add() handle bad arguments', function() {
+		var router = new Router()
+		router.add()
+	})
+})
