@@ -49,26 +49,10 @@ describe('Router Configuration Test', function() {
 		var errMsg = 'Params should be an Object and should not be empty.'
 		var router = new Router()
 
-		var emptyConfig = function() {
-				router.config()
-		}
-
-		var nullConfig = function() {
-				router.config(null)
-		}
-
-		var emptyObjConfig = function() {
-				router.config({})
-		}
-
-		var nullParamsConfig = function() {
-				router.config(null)
-		}
-
-		expect(emptyConfig).toThrowError(errMsg)
-		expect(nullConfig).toThrowError(errMsg)
-		expect(emptyObjConfig).toThrowError(errMsg)
-		expect(nullParamsConfig).toThrowError(errMsg)
+		expect(router.config).toThrowError(errMsg)
+		expect(router.config.bind(router, '')).toThrowError(errMsg)
+		expect(router.config.bind(router, {})).toThrowError(errMsg)
+		expect(router.config.bind(router, null)).toThrowError(errMsg)
 
 	})
 
@@ -218,16 +202,38 @@ describe('dispatch Method Test', function() {
 		var router = new Router
 		var handler = function() {}
 
-		var errMsg = 'Bad arguments pass to dispatch()'
+		var errMsg = 'Bad arguments pass to dispatch().'
 
-		expect(function() {
-			router.dispatch('/test', null)
-		}).toThrowError(errMsg)
-		expect(function() {
-			router.dispatch(null, handler)
-		}).toThrowError(errMsg)
+		expect(router.dispatch.bind(router, '/test', null)).toThrowError(errMsg)
+		expect(router.dispatch.bind(router, handler)).toThrowError(errMsg)
+	})
+})
 
-		console.log(router.routes)
+describe('dispatchAll Method Test', function() {
+	it('should handle normal arguments scenario', function() {
+		var router = new Router
+		var handler = function() {}
+		router.dispatchAll({
+			'/about': handler,
+			'/homepage': handler
+		})
 
+		expect(router.routes.length).toBe(2)
+		expect(router.routes[0]).toEqual({
+			regex: '/about', handler: handler
+		})
+		expect(router.routes[1]).toEqual({
+			regex: '/homepage', handler: handler
+		})
+	})
+
+	it('should handle bad arguments scenario', function() {
+		var router = new Router
+		var handler = function() {}
+
+		var errMsg = 'Bad arguments pass to dispathAll().'
+		expect(router.dispatchAll.bind(router, null)).toThrowError(errMsg)
+		expect(router.dispatchAll.bind(router, undefined)).toThrowError(errMsg)
+		expect(router.dispatchAll.bind(router, {})).toThrowError(errMsg)
 	})
 })
