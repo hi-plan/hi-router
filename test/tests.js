@@ -1,50 +1,43 @@
-const assert = require('chai').assert;
+describe('Router Initialize Test', function() {
 
-const Router = require('../lib/router')
-
-global.history = {}
-global.history.pushState = () => {};
-
-describe('Router Initialize Test', () => {
-
-	it('should be Initialized properly', () => {
-		let router = null
+	it('should be Initialized properly', function() {
+		var router = null
 		router = new Router
-		assert.isNotNull(!router, "Router is not null")
+		expect(router).not.toBe(null)
   })
 
-	it('should be configured by constructor', () => {
-		const config = {
+	it('should be configured by constructor', function() {
+		var config = {
 			mode: 'history',
 			root: '/dir/'
 		}
-		let router = new Router(config)
-		assert.deepEqual({
+		var router = new Router(config)
+		expect({
 			mode: router.mode,
-			root: router.root
-		}, config)
+			root: router.root}
+		).toEqual(config);
 	})
 
 });
 
-describe('Router Configuration Test', () => {
+describe('Router Configuration Test', function() {
 
-	it('should be configured by constructor', () => {
-		const config = {
+	it('should be configured by constructor', function() {
+		var config = {
 			mode: 'history',
 			root: '/dir/'
 		}
-		let router = new Router()
+		var router = new Router()
 		router.config(config)
-		assert.deepEqual({
+		expect({
 			mode: router.mode,
-			root: router.root
-		}, config)
+			root: router.root}
+		).toEqual(config);
 	})
 
-	it('should throw exception if params is empty or null', () => {
-		let router = new Router()
-		assert.throws(router.config)
+	it('should throw exception if params is empty or null', function() {
+		var router = new Router()
+
 	})
 
 })
