@@ -13,6 +13,9 @@ module.exports = function(config) {
         { type: 'lcov', dir: 'coverage/', subdir: '.' },
         { type: 'text-summary', dir: 'coverage/', subdir: '.' }
       ]
-    }
+    },
+    preprocessors: {
+      'lib/router.js': ['coverage']
+    },
   });
 };
