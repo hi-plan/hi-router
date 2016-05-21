@@ -69,15 +69,12 @@ export default class Router {
           .replace(/^\//, '');
    }
 
-   // Add a bunch of router
-   dispatchAll(list: { [key: string]: Function }) {
-     const regexs = Object.keys(list);
-     regexs.forEach(r => this.dispatch(r, list[r]) );
-     return this;
-   }
-
    // Add a router
    dispatch(regex: string, handler: Function) {
+     // Validation Judgement
+     if (!regex || !handler)
+      throw new Error('Bad arguments pass to dispatch()')
+
      this.routes.push({
        regex: regex,
        handler: handler
@@ -89,6 +86,13 @@ export default class Router {
        this.startListen = true;
      }
 
+     return this;
+   }
+
+   // Add a bunch of router
+   dispatchAll(list: { [key: string]: Function }) {
+     const regexs = Object.keys(list);
+     regexs.forEach(r => this.dispatch(r, list[r]) );
      return this;
    }
 
