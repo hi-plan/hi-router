@@ -33,6 +33,10 @@ export default class Router {
                     ? 'history'
                     : 'hash';
 
+     // If pass in root: '/', ignore it.
+     if (options.root && options.root === '/')
+       return this;
+
      this.root = options.root
                     ? '/' + this._clearSlashes(options.root) + '/'
                     : '/';
