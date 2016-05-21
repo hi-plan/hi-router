@@ -73,7 +73,7 @@ export default class Router {
    dispatch(regex: string, handler: Function) {
      // Validation Judgement
      if (!regex || !handler)
-      throw new Error('Bad arguments pass to dispatch().')
+       throw new Error('Bad arguments pass to dispatch().')
 
      this.routes.push({
        regex: regex,
