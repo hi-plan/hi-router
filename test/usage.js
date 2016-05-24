@@ -8,12 +8,12 @@ describe('Use Case Testing', function() {
         mode:'hash',
         root: '/'
       })
-      .dispatch(
+      .on(
         '/about',
         function() {
           fired = true
         })
-      .dispatchAll({
+      .on({
         '/about/me': function() { aboutMeFired = true; }
       })
       .fire('/about')
@@ -32,7 +32,7 @@ describe('Use Case Testing', function() {
     router.config({
       mode:'hash',
       root: '/'
-    }).dispatchAll({
+    }).on({
       '/about': function() {
         aboutBeCalled = true
       },
@@ -65,7 +65,7 @@ describe('Use Case Testing', function() {
       mode:'hash',
       root: '/'
     })
-    .dispatchAll({
+    .on({
       '/about': function() {
         aboutBeCalled = true
       },

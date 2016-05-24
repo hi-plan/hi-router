@@ -13,15 +13,13 @@ A Tiny Front End Router.
 		'/author': function() {
 			console.log('/author route');
 		},
-
 		'/about/(.*)?': function(id) {
 			console.log('/about route, id:', id);
 		},
-
-    '/aboutme/(.*)?/(.*)?': function(id, name) {
-      retId = id;
-      retName = name;
-    }
+		'/aboutme/(.*)?/(.*)?': function(id, name) {
+		  var retId = id;
+		  var retName = name;
+		}
 	});
 
 	router.navigate('/');
