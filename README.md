@@ -9,22 +9,27 @@ A Tiny Front End Router.
 <script src="../lib/router.js"></script>
 <script>
 	var router = new Router();
-	router.dispatchAll({
+	router.on({
 		'/author': function() {
 			console.log('/author route');
 		},
 
 		'/about/(.*)?': function(id) {
 			console.log('/about route, id:', id);
-		}
+		},
+
+    '/aboutme/(.*)?/(.*)?': function(id, name) {
+      retId = id;
+      retName = name;
+    }
 	});
 
 	router.navigate('/');
 	router.navigate('/author');
 	router.navigate('/about');
 
-	// OR, we can dispatch a route like this.
-	router.dispatch('/page', function() {
+	// OR, we can add a route like this.
+	router.on('/page', function() {
 		console.log('/page route');
 	});
 </script>
@@ -55,12 +60,12 @@ router.config({
 - Use it
 
 ```javascript
-router.dispatch('/page', function() {
+router.on('/page', function() {
 	console.log('/page route');
 });
 
 // Or,we could dispatch a bunch of routes.
-router.dispatchAll({
+router.on({
 	'/author': function() {
 		console.log('/author route');
 	},
