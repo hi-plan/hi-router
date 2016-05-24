@@ -5,7 +5,7 @@
  * @flow
  **/
 
-type Mode = 'history' | 'hash' | null;
+type Mode = 'history' | 'hash' | null
 
 type Route = {
   regex: string,
@@ -21,7 +21,7 @@ export default class Router {
    startListen: boolean = false;
 
    constructor(options: Object) {
-     options && this.config(options);
+     options && this.config(options)
    }
 
    config(options: Object) {
@@ -37,28 +37,28 @@ export default class Router {
      this.mode = options.mode
      this.mode = options.mode && options.mode == 'history' && !!(history.pushState)
                     ? 'history'
-                    : 'hash';
+                    : 'hash'
 
      // If pass in root: '/', ignore it.
      if (options.root && options.root === '/')
-       return this;
+       return this
 
      this.root = options.root
                     ? '/' + clearSlashes(options.root) + '/'
-                    : '/';
-     return this;
+                    : '/'
+     return this
    }
 
    getFragment(): string {
-     let fragment: string;
+     let fragment: string
      if (this.mode === 'history') {
-       const path = decodeURI(location.pathname);
-       fragment = clearSlashes(path);
-       fragment = this.root != '/' ? fragment.replace(this.root, '') : fragment;
+       const path = decodeURI(location.pathname)
+       fragment = clearSlashes(path)
+       fragment = this.root != '/' ? fragment.replace(this.root, '') : fragment
      }
      else {
-       const match = location.href.match(/#(.*)$/);
-       fragment = match? match[1]: '';
+       const match = location.href.match(/#(.*)$/)
+       fragment = match? match[1]: ''
      }
      return clearSlashes(fragment)
    }
@@ -92,16 +92,15 @@ export default class Router {
 
      // Listen to changes automatically.
      if (!this.startListen) {
-       this.listen();
-       this.startListen = true;
+       this.listen()
+       this.startListen = true
      }
-
-     return this;
+     return this
    }
 
    // Add a bunch of router
    dispatchAll(list: { [key: string]: Function }) {
-     let regexs = null;
+     let regexs = null
      try {
        regexs = Object.keys(list)
        if (regexs.length === 0)
@@ -110,83 +109,83 @@ export default class Router {
        throw e
      }
 
-     regexs.forEach(r => this.dispatch(r, list[r]) );
-     return this;
+     regexs.forEach(r => this.dispatch(r, list[r]) )
+     return this
    }
 
    remove(param: string | Function) {
-     const r = this.routes;
+     const r = this.routes
      for (let i = 0; i < r.length; i++) {
        if (param === r[i].handler) {
          r.splice(i, 1)
-         i--;
+         i--
        } else if (r[i].regex.toString() === param.toString()) {
-         r.splice(i, 1);
-         return this;
+         r.splice(i, 1)
+         return this
        }
      }
-     return this;
+     return this
    }
 
    // Re-initialize
    flush() {
-     this.routes = [];
-     this.mode = null;
-     this.root = '/';
-     return this;
+     this.routes = []
+     this.mode = null
+     this.root = '/'
+     return this
    }
 
    // Fire specific router handler
    fire(fragment: string) {
-     fragment = fragment || this.getFragment();
+     fragment = fragment || this.getFragment()
      this.routes.forEach((r: Route, i) => {
-       let regex = clearSlashes(r.regex);
-       const match = fragment.match(regex);
+       let regex = clearSlashes(r.regex)
+       const match = fragment.match(regex)
        if (match) {
-         match.shift();
+         match.shift()
          r.handler.apply(null, match)
-         return this;
+         return this
        }
-     });
-     return this;
+     })
+     return this
    }
 
    // Listen to fragment changes
    listen() {
-     let curFragment = this.getFragment();
-     clearInterval(this.intv);
+     let curFragment = this.getFragment()
+     clearInterval(this.intv)
      this.intv = setInterval(() => {
        // URL changed.
        if (curFragment !== this.getFragment()) {
         //  console.log(`old frag: ${curFragment}, new frag: ${this.getFragment()}`)
-         curFragment = this.getFragment();
+         curFragment = this.getFragment()
          // Fire check
-         this.fire(curFragment);
+         this.fire(curFragment)
        }
-     }, 50);
-     return this;
+     }, 50)
+     return this
    }
 
    // Navigate to specific URL
    navigate(path: string) {
-     path = path || '';
+     path = path || ''
      if (this.mode === 'history') {
        if (path.indexOf('#') >= 0)
-        return;
+        return
        history.pushState(null, '', this.root + clearSlashes(path))
      }
      else {
        window.location.href =
                       window.location.href.replace(/#(.*)$/, '')
-                      + '#/' + clearSlashes(path);
+                      + '#/' + clearSlashes(path)
      }
-     return this;
+     return this
    }
 
  }
 
  function contains(arr: Array<any>, target: any): boolean {
-   let i = arr.length;
+   let i = arr.length
    while(i--) {
      if (target.regex === arr[i].regex)
       return true
@@ -197,7 +196,7 @@ export default class Router {
  function clearSlashes(path: string): string {
    return path
         .replace(/\/$/, '')
-        .replace(/^\//, '');
+        .replace(/^\//, '')
  }
 
  function isObject(arg: any): boolean {
