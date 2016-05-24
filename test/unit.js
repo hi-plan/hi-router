@@ -253,10 +253,11 @@ describe('dispatchAll Method Test', function() {
     var router = new Router
     var handler = function() {}
 
-    var errMsg = 'Bad arguments pass to dispathAll().'
-    expect(router.dispatchAll.bind(router, null)).toThrowError(errMsg)
-    expect(router.dispatchAll.bind(router, undefined)).toThrowError(errMsg)
-    expect(router.dispatchAll.bind(router, {})).toThrowError(errMsg)
+    var notObjErr = 'Requested keys of a value that is not an object.'
+    var emptyErr = 'Object should not be empty.';
+    expect(router.dispatchAll.bind(router, null)).toThrowError(notObjErr)
+    expect(router.dispatchAll.bind(router, undefined)).toThrowError(notObjErr)
+    expect(router.dispatchAll.bind(router, {})).toThrowError(emptyErr)
   })
 })
 
@@ -337,5 +338,45 @@ describe('listen Method Test', function() {
         done()
       else done.fail()
     }, 70)
+  })
+})
+
+describe('on Method Test', function() {
+  it('should add a single route properly', function() {
+    var router = new Router
+    var mock = {
+      regex: '/about',
+      handler: function() {}
+    }
+    router.on(mock.regex, mock.handler)
+
+    expect(router.routes.length).toBe(1)
+    expect(router.routes[0]).toEqual(mock)
+  })
+
+  it('should add a bunch of routes at the same time', function() {
+    var router = new Router
+    var mock = {
+      '/about': function() {},
+      '/author': function() {}
+    }
+    router.on(mock)
+
+    expect(router.routes.length).toBe(2)
+    expect(router.routes[0]).toEqual({ regex: '/about', handler: mock['/about'] })
+    expect(router.routes[1]).toEqual({ regex: '/author', handler: mock['/author'] })
+  })
+
+  it('should throw an Error when bad arguments passed in', function() {
+    var router = new Router
+    var err = 'Argument should be a string or object map.'
+    var err1 = 'Object should not be empty.'
+    var err2 = 'Bad arguments pass to dispathAll().'
+    expect(router.on.bind(router, null)).toThrowError(err)
+    expect(router.on.bind(router, '')).toThrowError(err)
+    expect(router.on.bind(router, undefined)).toThrowError(err)
+    expect(router.on.bind(router, [])).toThrowError(err)
+    expect(router.on.bind(router, {})).toThrowError(err1)
+    expect(router.on.bind(router, true)).toThrowError(err)
   })
 })

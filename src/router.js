@@ -70,7 +70,7 @@ export default class Router {
      else if (regex && isObject(regex))
        this.dispatchAll(regex, handler)
      else
-       throw new Error('Bad arguments.')
+       throw new Error('Argument should be a string or object map.')
    }
 
    // Add a router
@@ -105,9 +105,9 @@ export default class Router {
      try {
        regexs = Object.keys(list)
        if (regexs.length === 0)
-        throw new Error('Object should not be empty.');
+        throw new Error('Object should not be empty.')
      } catch(e) {
-       throw new Error('Bad arguments pass to dispathAll().')
+       throw e
      }
 
      regexs.forEach(r => this.dispatch(r, list[r]) );
@@ -201,6 +201,6 @@ export default class Router {
  }
 
  function isObject(arg: any): boolean {
-   return typeof Object.prototype.toString
-        .apply(arg).slice(8,-1) === 'Object'
+   return Object.prototype.toString.apply(arg)
+        .slice(8,-1) === 'Object'
  }
