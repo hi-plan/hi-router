@@ -92,6 +92,3 @@ router.flush();
 ```npm install```
 
 ```npm run build```
-
-### Lack of Test Case now
-Should not use in Production, it's still an unstable version.
