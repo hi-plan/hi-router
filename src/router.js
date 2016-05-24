@@ -71,6 +71,7 @@ export default class Router {
        this.dispatchAll(regex, handler)
      else
        throw new Error('Argument should be a string or object map.')
+     return this;
    }
 
    // Add a router
@@ -166,8 +167,8 @@ export default class Router {
      return this
    }
 
-   // Navigate to specific URL
-   navigate(path: string) {
+   // go to specific URL
+   go(path: string) {
      path = path || ''
      if (this.mode === 'history') {
        if (path.indexOf('#') >= 0)

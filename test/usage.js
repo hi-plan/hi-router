@@ -44,7 +44,7 @@ describe('Use Case Testing', function() {
       }
     })
 
-    router.navigate('/about')
+    router.go('/about')
     setTimeout(function() {
       if (aboutBeCalled)
         done()

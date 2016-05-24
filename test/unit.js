@@ -14,7 +14,7 @@ describe('Router Initialize Test', function() {
     expect({
       mode: router.mode,
       root: router.root
-    }).toEqual(config);
+    }).toEqual(config)
   })
 
   it('should not be called as function', function() {
@@ -22,7 +22,7 @@ describe('Router Initialize Test', function() {
     expect(Router).toThrowError(err)
   })
 
-});
+})
 
 describe('Router Configuration Test', function() {
   it('should be configured by constructor', function() {
@@ -90,7 +90,7 @@ describe('Router Configuration Test', function() {
   })
 })
 
-describe('Navigate Function Test in `hash` Mode', function() {
+describe('go Function Test in `hash` Mode', function() {
 
   var router = new Router()
   router.config({
@@ -99,52 +99,52 @@ describe('Navigate Function Test in `hash` Mode', function() {
 
   var sourceURL = location.href
 
-  it('should navigate to correct URL', function() {
+  it('should go to correct URL', function() {
     var url = location.href
-    router.navigate('/about')
+    router.go('/about')
     expect(location.href).toBe(url + '#/about')
 
-    router.navigate('/about/')
+    router.go('/about/')
     expect(location.href).toBe(url + '#/about')
   })
 
-  it('should navigate to correct URL in complex path', function() {
-    router.navigate('/about')
+  it('should go to correct URL in complex path', function() {
+    router.go('/about')
     expect(location.href).toBe(sourceURL + '#/about')
 
-    router.navigate('/about/test')
+    router.go('/about/test')
     expect(location.href).toBe(sourceURL + '#/about/test')
 
-    router.navigate('/about/test/')
+    router.go('/about/test/')
     expect(location.href).toBe(sourceURL + '#/about/test')
   })
 
 })
 
-describe('Navigate Function Test in `history` Mode', function() {
+describe('go Function Test in `history` Mode', function() {
   var router = new Router()
   router.config({
     mode: 'history'
   })
 
-  var sourceURL = 'http://' + location.host;
+  var sourceURL = 'http://' + location.host
 
-  it('should navigate to correct URL', function() {
-    router.navigate('/about')
+  it('should go to correct URL', function() {
+    router.go('/about')
     expect(location.href).toBe(sourceURL + '/about')
 
-    router.navigate('/about/')
+    router.go('/about/')
     expect(location.href).toBe(sourceURL + '/about')
   })
 
-  it('should navigate to correct URL in complex path', function() {
-    router.navigate('/about')
+  it('should go to correct URL in complex path', function() {
+    router.go('/about')
     expect(location.href).toBe(sourceURL + '/about')
 
-    router.navigate('/about/test')
+    router.go('/about/test')
     expect(location.href).toBe(sourceURL + '/about/test')
 
-    router.navigate('/about/test/')
+    router.go('/about/test/')
     expect(location.href).toBe(sourceURL + '/about/test')
   })
 
@@ -158,16 +158,16 @@ describe('getFragment Method Test', function() {
     })
     expect(router.getFragment()).toBe('')
 
-    router.navigate('/about')
+    router.go('/about')
     expect(router.getFragment()).toBe('about')
 
-    router.navigate('/about/')
+    router.go('/about/')
     expect(router.getFragment()).toBe('about')
 
-    router.navigate('/about/test/')
+    router.go('/about/test/')
     expect(router.getFragment()).toBe('about/test')
 
-    router.navigate('#/about/test/')
+    router.go('#/about/test/')
     expect(router.getFragment()).toBe('#/about/test')
   })
 
@@ -175,16 +175,16 @@ describe('getFragment Method Test', function() {
     var router = new Router({
       mode: 'history'
     })
-    router.navigate('/about')
+    router.go('/about')
     expect(router.getFragment()).toBe('about')
 
-    router.navigate('/about/')
+    router.go('/about/')
     expect(router.getFragment()).toBe('about')
 
-    router.navigate('/about/test/')
+    router.go('/about/test/')
     expect(router.getFragment()).toBe('about/test')
 
-    router.navigate('/#/about/test/')
+    router.go('/#/about/test/')
       // Contains hash tag will fail to jump!
     expect(router.getFragment()).toBe('about/test')
   })
@@ -254,7 +254,7 @@ describe('dispatchAll Method Test', function() {
     var handler = function() {}
 
     var notObjErr = 'Requested keys of a value that is not an object.'
-    var emptyErr = 'Object should not be empty.';
+    var emptyErr = 'Object should not be empty.'
     expect(router.dispatchAll.bind(router, null)).toThrowError(notObjErr)
     expect(router.dispatchAll.bind(router, undefined)).toThrowError(notObjErr)
     expect(router.dispatchAll.bind(router, {})).toThrowError(emptyErr)
@@ -320,7 +320,7 @@ describe('listen Method Test', function() {
     var router = new Router
     var beCalled = false
     router.dispatch('/about', function() { beCalled = true })
-    router.navigate('/about')
+    router.go('/about')
     setTimeout(function() {
       if (beCalled)
         done()
@@ -332,7 +332,7 @@ describe('listen Method Test', function() {
     var router = new Router({mode: 'history'})
     var beCalled = false
     router.dispatch('/about', function() { beCalled = true })
-    router.navigate('/about')
+    router.go('/about')
     setTimeout(function() {
       if (beCalled)
         done()

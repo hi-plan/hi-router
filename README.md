@@ -10,21 +10,23 @@ A Tiny Front End Router.
 <script>
 	var router = new Router();
 	router.on({
-		'/author': function() {
-			console.log('/author route');
-		},
-		'/about/(.*)?': function(id) {
-			console.log('/about route, id:', id);
-		},
-		'/aboutme/(.*)?/(.*)?': function(id, name) {
-		  var retId = id;
-		  var retName = name;
-		}
+	  '/author': function() {
+		  console.log('/author route');
+	  },
+
+	  '/about/(.*)?': function(id) {
+	    console.log('/about route, id:', id);
+	  },
+    
+	  '/aboutme/(.*)?/(.*)?': function(id, name) {
+	    var retId = id;
+	    var retName = name;
+    }
 	});
 
-	router.navigate('/');
-	router.navigate('/author');
-	router.navigate('/about');
+	router.go('/');
+	router.go('/author');
+	router.go('/about');
 
 	// OR, we can add a route like this.
 	router.on('/page', function() {
@@ -74,9 +76,9 @@ router.on({
 });
 ```
 
-Navigate to specified path.
+go to specified path.
 ```javascript
-router.navigate('/author');
+router.go('/author');
 ```
 
 - Re-initialize
