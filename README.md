@@ -17,7 +17,7 @@ A Tiny Front End Router.
 	  '/about/(.*)?': function(id) {
 	    console.log('/about route, id:', id);
 	  },
-    
+
 	  '/aboutme/(.*)?/(.*)?': function(id, name) {
 	    var retId = id;
 	    var retName = name;
