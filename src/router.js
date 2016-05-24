@@ -44,7 +44,7 @@ export default class Router {
        return this;
 
      this.root = options.root
-                    ? '/' + this._clearSlashes(options.root) + '/'
+                    ? '/' + clearSlashes(options.root) + '/'
                     : '/';
      return this;
    }
@@ -53,20 +53,24 @@ export default class Router {
      let fragment: string;
      if (this.mode === 'history') {
        const path = decodeURI(location.pathname);
-       fragment = this._clearSlashes(path);
+       fragment = clearSlashes(path);
        fragment = this.root != '/' ? fragment.replace(this.root, '') : fragment;
      }
      else {
        const match = location.href.match(/#(.*)$/);
        fragment = match? match[1]: '';
      }
-     return this._clearSlashes(fragment)
+     return clearSlashes(fragment)
    }
 
-   _clearSlashes(path: string): string {
-     return path
-          .replace(/\/$/, '')
-          .replace(/^\//, '');
+   // Exposed method for binding routes.
+   on(regex: string, handler: Function) {
+     if (regex && typeof regex === 'string')
+       this.dispatch(regex, handler)
+     else if (regex && isObject(regex))
+       this.dispatchAll(regex, handler)
+     else
+       throw new Error('Bad arguments.')
    }
 
    // Add a router
@@ -75,7 +79,10 @@ export default class Router {
      if (!regex || !handler)
        throw new Error('Bad arguments pass to dispatch().')
 
-     if (this._contains(this.routes, {regex: regex, handler: handler}))
+     if (typeof handler !== 'function')
+       throw new Error('handler must be type Function')
+
+     if (contains(this.routes, {regex: regex, handler: handler}))
        throw new Error('Add route twice.')
 
      this.routes.push({
@@ -118,17 +125,7 @@ export default class Router {
          return this;
        }
      }
-
      return this;
-   }
-
-   _contains(arr: Array<any>, target: any): boolean {
-     let i = arr.length;
-     while(i--) {
-       if (target.regex === arr[i].regex)
-        return true
-     }
-     return false
    }
 
    // Re-initialize
@@ -143,7 +140,7 @@ export default class Router {
    fire(fragment: string) {
      fragment = fragment || this.getFragment();
      this.routes.forEach((r: Route, i) => {
-       let regex = this._clearSlashes(r.regex);
+       let regex = clearSlashes(r.regex);
        const match = fragment.match(regex);
        if (match) {
          match.shift();
@@ -176,13 +173,34 @@ export default class Router {
      if (this.mode === 'history') {
        if (path.indexOf('#') >= 0)
         return;
-       history.pushState(null, '', this.root + this._clearSlashes(path))
+       history.pushState(null, '', this.root + clearSlashes(path))
      }
      else {
-       window.location.href = window.location.href.replace(/#(.*)$/, '')
-                              + '#/' + this._clearSlashes(path);
+       window.location.href =
+                      window.location.href.replace(/#(.*)$/, '')
+                      + '#/' + clearSlashes(path);
      }
      return this;
    }
 
+ }
+
+ function contains(arr: Array<any>, target: any): boolean {
+   let i = arr.length;
+   while(i--) {
+     if (target.regex === arr[i].regex)
+      return true
+   }
+   return false
+ }
+
+ function clearSlashes(path: string): string {
+   return path
+        .replace(/\/$/, '')
+        .replace(/^\//, '');
+ }
+
+ function isObject(arg: any): boolean {
+   return typeof Object.prototype.toString
+        .apply(arg).slice(8,-1) === 'Object'
  }
